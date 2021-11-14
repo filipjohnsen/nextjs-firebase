@@ -13,7 +13,6 @@
       "@lib/*": ["./lib/*"],
       "@context/*": ["./context/*"],
       "@types": ["./types"],
-      "@utils/*": ["./utils/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,

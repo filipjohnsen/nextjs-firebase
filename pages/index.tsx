@@ -12,7 +12,18 @@ const Index: NextPage = () => {
 
   return (
     <div>
-      <h1>{user ? `Welcome ${user.email}` : 'You are not logged in'}</h1>
+      <h1>
+        {user ? (
+          <div>
+            Welcome{' '}
+            <Link href={`/user/${user.uid}`}>
+              <a>{user.email}</a>
+            </Link>
+          </div>
+        ) : (
+          'You are not logged in'
+        )}
+      </h1>
       <button
         onClick={
           !user ? async () => await loginWithProvider(googleProvider) : async () => await logout()

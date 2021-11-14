@@ -8,6 +8,7 @@ export const AuthContext = createContext<UseAuthContextProvider>({
   loginWithProvider: async () => {},
   logout: async () => {},
   signup: async () => {},
+  deleteAccount: async () => {},
   user: null,
 });
 
