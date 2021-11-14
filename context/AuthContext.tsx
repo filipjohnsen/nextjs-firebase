@@ -12,10 +12,5 @@ export const AuthContext = createContext<UseAuthContextProvider>({
 });
 
 export const AuthContextProvider: React.FC = ({ children }) => {
-  const { isLoading, ...rest } = useAuthContextProvider();
-  return (
-    <AuthContext.Provider value={{ isLoading, ...rest }}>
-      {isLoading ? <div>Loading...</div> : children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={useAuthContextProvider()}>{children}</AuthContext.Provider>;
 };
