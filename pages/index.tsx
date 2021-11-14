@@ -1,6 +1,7 @@
 import { useAuth } from '@hooks/useAuth';
 import { googleProvider } from '@lib/firebase-client';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 
 const Index: NextPage = () => {
   const { user, loginWithProvider, logout, isLoading } = useAuth();
@@ -19,6 +20,17 @@ const Index: NextPage = () => {
       >
         {user ? 'Log out' : 'Log in'}
       </button>
+      {!user && (
+        <div>
+          <p>
+            Not signed up? Sign up{' '}
+            <Link passHref href="/signup">
+              <a>here</a>
+            </Link>
+            .
+          </p>
+        </div>
+      )}
     </div>
   );
 };

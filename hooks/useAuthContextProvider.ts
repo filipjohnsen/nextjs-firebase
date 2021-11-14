@@ -5,15 +5,18 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  User
+  User,
 } from '@firebase/auth';
 import { auth } from '@lib/firebase-client';
+import { SignUp } from '@types';
 import { createUser } from '@utils/create-user';
+import { useRouter } from 'next/dist/client/router';
 import { useCallback, useEffect, useState } from 'react';
 
 export const useAuthContextProvider = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,15 +54,19 @@ export const useAuthContextProvider = () => {
 
   const logout = useCallback(async () => await signOut(auth), []);
 
-  const signup = async (email: string, password: string) => {
-    try {
-      const { user } = await createUserWithEmailAndPassword(auth, email, password);
-      await createUser(user);
-      setUser(() => user);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const signup = useCallback(
+    async ({ email, password, config }: SignUp) => {
+      try {
+        const { user } = await createUserWithEmailAndPassword(auth, email, password);
+        await createUser(user);
+        config ? router.push(config.redirectTo) : null;
+        setUser(() => user);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [router.push]
+  );
 
   return { user, isLoading, login, loginWithProvider, logout, signup };
 };

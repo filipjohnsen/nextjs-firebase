@@ -10,6 +10,7 @@ export const createUser = async (user: User) => {
       email: user.email,
       displayName: user.displayName ?? user.email,
       photoURL: user.photoURL ?? '',
+      verified: user.emailVerified,
     });
   } catch (error) {
     console.error(error);
