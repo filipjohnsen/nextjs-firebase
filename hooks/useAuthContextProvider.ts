@@ -5,10 +5,11 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  User,
+  User
 } from '@firebase/auth';
-import { useCallback, useEffect, useState } from 'react';
 import { auth } from '@lib/firebase-client';
+import { createUser } from '@utils/create-user';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useAuthContextProvider = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -41,6 +42,7 @@ export const useAuthContextProvider = () => {
   const loginWithProvider = useCallback(async (provider: AuthProvider) => {
     try {
       const { user } = await signInWithPopup(auth, provider);
+      user.metadata.creationTime === user.metadata.lastSignInTime ? await createUser(user) : null;
       setUser(() => user);
     } catch (error) {
       console.error(error);
@@ -52,6 +54,7 @@ export const useAuthContextProvider = () => {
   const signup = async (email: string, password: string) => {
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      await createUser(user);
       setUser(() => user);
     } catch (error) {
       console.error(error);
